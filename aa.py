@@ -34,7 +34,7 @@ class Poder(ABC):
         return f"{self.nome} (Dano: {self.dano})"
         
 #testetete
-int = 122
+
 # =========================
 # CLASSE BASE: ITEM
 # =========================
