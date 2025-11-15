@@ -37,8 +37,10 @@ def spawn_inimigo():
         x_inimigo = 800
         y_inimigo = random.randint(0, 560)
 
-    inimigo = Inimigo_um()  
-    inimigo.rect = pygame.Rect(x_inimigo, y_inimigo, 40, 40)  # define posição
+    inimigo = Inimigo_um()
+    inimigo.x = x_inimigo
+    inimigo.y = y_inimigo
+    inimigo.rect = pygame.Rect(inimigo.x, inimigo.y, 40, 40)
     return inimigo
 
 
