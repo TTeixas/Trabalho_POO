@@ -33,8 +33,8 @@ class Poder(ABC):
     def __str__(self):
         return f"{self.nome} (Dano: {self.dano})"
         
-
-
+#testetete
+int = 122
 # =========================
 # CLASSE BASE: ITEM
 # =========================
