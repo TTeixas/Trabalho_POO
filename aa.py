@@ -280,14 +280,14 @@ class MagicWand(Arma):
 
 
 
-    # Lança projeteis em x, -x, y, -y  
-    #   V    V         V      V                
+    # Lança projetos em todas as direções (up, down, right, left) 
+    # Pode ser usado para outras armas 
         """ 
     def attack(self, x, y):
         agora = pygame.time.get_ticks()
 
         # controla cooldown
-        if agora - self.ultimo_tiro < self.cooldown:
+        if agora - self.ultimo_tiro < self.cooldown: #cooldown entre os tiros
             return
         self.ultimo_tiro = agora
 
@@ -306,6 +306,7 @@ class MagicWand(Arma):
             rect = tiro["rect"]
             d = tiro["direcao"]
 
+            # 4 tiros para as 4 direções 
             if d == "up": rect.y -= self.vel
             if d == "down": rect.y += self.vel
             if d == "left": rect.x -= self.vel
@@ -359,5 +360,4 @@ class Magia(Poder):
         super().__init__("Magia de Fogo", 10)
 
     def lancar(self, alvo: Inimigo):
-        # exemplo de efeito
         alvo.vida_atual -= 10

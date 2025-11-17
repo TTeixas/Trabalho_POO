@@ -2,6 +2,16 @@ import pygame
 import random
 from aa import *
 
+
+"""
+    - Camera por offset(camera centralizada no jogador)
+    - XP
+    - Menu (nada muito cheio, apenas um iniciar jogo e fechar)
+"""
+
+# Terminando as 3 mecanicas de cima, da pra fazer mais personagens e etc. 
+
+
 pygame.init()
 tela = pygame.display.set_mode((800, 600))
 clock = pygame.time.Clock()
@@ -17,6 +27,9 @@ rodando = True
 pausado = False
 
 
+#Camera 
+offset_x = 800 // 2 - x
+offset_y = 600 // 2 - y
 
 varinha = MagicWand()
 antonio.add_arma(varinha)
@@ -55,7 +68,9 @@ while rodando:
     for e in pygame.event.get():
         if e.type == pygame.QUIT:
             rodando = False
-
+        
+    #
+            
         if e.type == pygame.KEYDOWN:
             if e.key == pygame.K_ESCAPE:
                 pausado = not pausado   
