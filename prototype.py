@@ -27,9 +27,14 @@ rodando = True
 pausado = False
 
 
+#Talvez eu faça um arquivo dedicado apenas para menu
+def menu():
+    pass
+
 #Camera 
 offset_x = 800 // 2 - x
 offset_y = 600 // 2 - y
+
 
 varinha = MagicWand()
 antonio.add_arma(varinha)
