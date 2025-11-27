@@ -15,7 +15,7 @@ Comandos para instalar/ rodar o jogo:
 
 ```bash
 git clone https://github.com/TTeixas/Trabalho_POO.git
-cd jogo
+cd Trabalho__POO
 
 pip install -r requirements.txt
 
