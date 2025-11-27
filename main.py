@@ -361,3 +361,4 @@ class Magia(Poder):
 
     def lancar(self, alvo: Inimigo):
         alvo.vida_atual -= 10
+## aaaa
