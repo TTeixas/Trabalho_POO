@@ -161,14 +161,20 @@ class Inimigo(ABC):
 # =========================
 # INIMIGOS ESPECÍFICOS
 # =========================
-class Inimigo_um(Inimigo):
+class Morcego(Inimigo):
     def __init__(self):
-        super().__init__("Inimigo_um")
+        super().__init__("Morcego")
+        self.imagem_normal = pygame.image.load ("assets/morcego.png").convert_alpha()
+        self.image = pygame.transform.scale(self.imagem_normal, (100, 100))
+        self.rect = self.image.get_rect(topleft = (self.x, self.y))
         self.cor = (255, 0, 0)
 
 class Goblin(Inimigo):
     def __init__(self):
         super().__init__("Globin")
+        self.imagem_normal = pygame.image.load ("assets/goblin.png").convert_alpha()
+        self.image = pygame.transform.scale(self.imagem_normal, (100, 100))
+        self.rect = self.image.get_rect(topleft = (self.x, self.y))
         self.cor = (14, 14, 216)
         self.largura = 50
         self.altura = 50
@@ -177,6 +183,9 @@ class Goblin(Inimigo):
 class Gigante(Inimigo):
     def __init__(self):
         super().__init__("Gigante")
+        self.imagem_normal = pygame.image.load ("assets/gigante.png").convert_alpha()
+        self.image = pygame.transform.scale(self.imagem_normal, (100, 100))
+        self.rect = self.image.get_rect(topleft = (self.x, self.y))
         self.cor = (255,255,255)
         self.move_speed = 0.1
         self.vida_maxima = 200

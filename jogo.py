@@ -27,7 +27,7 @@ intervalo_spawn = 3000
 max_inimigos = 10
 
 # tipos e pesos (mantive seu valor)
-tipos_de_inimigos = [Inimigo_um, Goblin, Gigante]
+tipos_de_inimigos = [Morcego, Goblin, Gigante]
 pesos_inimigos = [50, 50, 100]
 
 
@@ -80,7 +80,7 @@ def tela_gameover():
 
 
 # FUNÇÃO DE SPAWN
-tipos_de_inimigos = [Inimigo_um, Goblin, Gigante]
+tipos_de_inimigos = [Morcego, Goblin, Gigante]
 pesos_inimigos = [50, 30, 20]
 
 def spawn_inimigo():
@@ -175,7 +175,7 @@ def atualizar_jogo():
         inimigo.atacar(antonio, tempo_atual)
 
         if inimigo.vida_atual > 0:
-            pygame.draw.rect(tela, inimigo.cor, inimigo.rect)
+            tela.blit(inimigo.image, inimigo.rect)
         else:
             print(f"{inimigo.nome} foi derrotado!")
             inimigos.remove(inimigo)
