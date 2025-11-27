@@ -125,7 +125,7 @@ class Inimigo(ABC):
         self.x = 100
         self.y = 100
         self.tamanho = 40
-        self.dano = 5
+        self.dano = 100000
         self.cooldown_dano = 1000
         self.ultimo_dano = 0
         self.rect = pygame.Rect(self.x, self.y, 50, 50)
