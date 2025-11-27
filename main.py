@@ -122,13 +122,15 @@ class Inimigo(ABC):
         self.vida_atual = self.vida_maxima
         self.defesa = 10
         self.move_speed = 0.5
+        self.largura = 40
+        self.altura = 40
         self.x = 100
         self.y = 100
         self.tamanho = 40
-        self.dano = 100000
+        self.dano = 5
         self.cooldown_dano = 1000
         self.ultimo_dano = 0
-        self.rect = pygame.Rect(self.x, self.y, 50, 50)
+        self.rect = pygame.Rect(self.x, self.y, self.largura, self.altura)
 
     def mover_para(self, alvo_x, alvo_y):
         if self.x < alvo_x:
@@ -163,6 +165,24 @@ class Inimigo_um(Inimigo):
     def __init__(self):
         super().__init__("Inimigo_um")
         self.cor = (255, 0, 0)
+
+class Goblin(Inimigo):
+    def __init__(self):
+        super().__init__("Globin")
+        self.cor = (14, 14, 216)
+        self.largura = 50
+        self.altura = 50
+        self.move_speed = 0.3
+
+class Gigante(Inimigo):
+    def __init__(self):
+        super().__init__("Gigante")
+        self.cor = (255,255,255)
+        self.move_speed = 0.1
+        self.vida_maxima = 200
+        self.dano = 15     
+        self.largura = 80
+        self.altura = 80
 
 
 # =========================
@@ -227,7 +247,7 @@ class Whip(Arma):
 
 class MagicWand(Arma):
     def __init__(self):
-        super().__init__("Magic Wand", 10000)
+        super().__init__("Magic Wand", 4)
         self.tiros = []
         self.vel = 5
 
@@ -277,12 +297,28 @@ class MagicWand(Arma):
                     self.tiros.remove(tiro)
                     break
  
+          
+    def draw(self, tela):
+        for tiro in self.tiros:
+            pygame.draw.rect(tela, (0, 162, 232), tiro["rect"])
+        
 
+
+
+class Knife(Arma):
+    def __init__(self):
+        super().__init__("Magic Wand", 7)
+        self.tiros = []
+        self.vel = 5
+
+        self.cooldown = 5000  # milissegundos
+        self.ultimo_tiro = 0
+        
 
 
     # Lança projetos em todas as direções (up, down, right, left) 
     # Pode ser usado para outras armas 
-        """ 
+        
     def attack(self, x, y):
         agora = pygame.time.get_ticks()
 
@@ -295,11 +331,11 @@ class MagicWand(Arma):
 
         for d in direcoes:
             self.tiros.append({
-                "rect": pygame.Rect(x, y, 8, 8),
+                "rect": pygame.Rect(x, y, 10, 20),
                 "direcao": d
             })
-        """
-        """
+        
+        
     def atualizar(self, inimigos):
         # movimenta todos os tiros
         for tiro in self.tiros[:]:
@@ -323,20 +359,11 @@ class MagicWand(Arma):
                     inimigo.vida_atual -= self.dano
                     self.tiros.remove(tiro)
                     break
-         """           
+                    
     def draw(self, tela):
         for tiro in self.tiros:
-            pygame.draw.rect(tela, (0, 162, 232), tiro["rect"])
-        
-
-
-
-class Knife(Arma):
-    def __init__(self):
-        super().__init__("Knife", 6.5)
-
-    def attack(self):
-        print("Faca lançada!")
+            pygame.draw.rect(tela, (114, 114, 114), tiro["rect"])
+ 
 
 
 class Armor(Item):

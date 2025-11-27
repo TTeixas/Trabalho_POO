@@ -7,28 +7,39 @@ tela = pygame.display.set_mode((800, 600))
 clock = pygame.time.Clock()
 fonte = pygame.font.SysFont(None, 60)
 
-# OBJETOS
 antonio = Antonio()
-bobao = Inimigo_um()
-
-inimigos = [bobao]
 x, y = 300, 300
 velocidade = 3
 direcao = "right"
-estado = "menu"
 
-# CAMERA
-offset_x = 800 // 2 - x
-offset_y = 600 // 2 - y
+inimigos = []  # lista começa vazia
+estado = "menu"
 
 # ARMA
 varinha = MagicWand()
+adagas = Knife()
 antonio.add_arma(varinha)
+antonio.add_arma(adagas)
 
-# SPAWN DE INIMIGOS
+# SPAWN
 tempo_ultimo_spawn = 0
 intervalo_spawn = 3000
 max_inimigos = 10
+
+# tipos e pesos (mantive seu valor)
+tipos_de_inimigos = [Inimigo_um, Goblin, Gigante]
+pesos_inimigos = [50, 50, 100]
+
+
+def resetar_jogo():
+    global inimigos, x, y, intervalo_spawn, tempo_ultimo_spawn
+
+    inimigos = []
+    x, y = 300, 300
+    antonio.vida_atual = antonio.vida_maxima
+
+    intervalo_spawn = 3000
+    tempo_ultimo_spawn = pygame.time.get_ticks()
 
 
 # CONTROLE DE TELAS
@@ -45,7 +56,7 @@ def estados_do_jogo():
 # FUNÇÕES DE TELAS
 def tela_menu():
     tela.fill((0, 0, 0))
-    titulo = fonte.render("Jogo!", True, (255, 255, 255))
+    titulo = fonte.render("POO game", True, (255, 255, 255))
     opc1 = fonte.render("1 - Iniciar Jogo", True, (200, 200, 200))
     opc2 = fonte.render("2 - Sair", True, (200, 200, 200))
 
@@ -69,6 +80,8 @@ def tela_gameover():
 
 
 # FUNÇÃO DE SPAWN
+tipos_de_inimigos = [Inimigo_um, Goblin, Gigante]
+pesos_inimigos = [50, 30, 20]
 
 def spawn_inimigo():
     lados = ["top", "bottom", "left", "right"]
@@ -87,10 +100,21 @@ def spawn_inimigo():
         x_inimigo = 800
         y_inimigo = random.randint(0, 560)
 
-    inimigo = Inimigo_um()
+    classe_inimigo = random.choices(
+        tipos_de_inimigos,
+        weights=pesos_inimigos,
+        k=1
+    )[0]
+
+    inimigo = classe_inimigo()
+
+    
+    largura = getattr(inimigo, "largura", getattr(inimigo, "tamanho", 40))
+    altura = getattr(inimigo, "altura", getattr(inimigo, "tamanho", 40))
+
     inimigo.x = x_inimigo
     inimigo.y = y_inimigo
-    inimigo.rect = pygame.Rect(inimigo.x, inimigo.y, 40, 40)
+    inimigo.rect = pygame.Rect(inimigo.x, inimigo.y, largura, altura)
     return inimigo
 
 
@@ -125,9 +149,6 @@ def atualizar_jogo():
         antonio.rect = pygame.Rect(x, y, 40, 40)
     else:
         estado = "gameover"
-        if e.key == pygame.K_1:
-            estado = "menu"
-            estados_do_jogo()
         return
 
     
@@ -139,7 +160,18 @@ def atualizar_jogo():
 
     
     for inimigo in inimigos[:]:
+        # mover_para deve alterar inimigo.x / inimigo.y
         inimigo.mover_para(x, y)
+
+        # GARANTIR QUE O RECT ACOMPANHA A POSIÇÃO (caso a classe não faça)
+        try:
+            inimigo.rect.topleft = (int(inimigo.x), int(inimigo.y))
+        except Exception:
+            # caso não exista rect (proteção), criar um
+            largura = getattr(inimigo, "largura", getattr(inimigo, "tamanho", 40))
+            altura = getattr(inimigo, "altura", getattr(inimigo, "tamanho", 40))
+            inimigo.rect = pygame.Rect(int(inimigo.x), int(inimigo.y), largura, altura)
+
         inimigo.atacar(antonio, tempo_atual)
 
         if inimigo.vida_atual > 0:
@@ -154,15 +186,20 @@ def atualizar_jogo():
             arma.attack(tempo_atual, x, y, direcao, inimigos)
             arma.update(tempo_atual)
             arma.draw(tela)
-            """
+            
         elif isinstance(arma, MagicWand):
             if inimigos:
                 alvo = inimigos[0]
                 arma.attack(x, y, alvo.x, alvo.y)
             arma.atualizar(inimigos)
             arma.draw(tela)
-            """
-
+            
+            
+        elif isinstance(arma, Knife):
+            arma.attack(x, y)
+            arma.atualizar(inimigos)
+            arma.draw(tela)    
+            
 # LOOP PRINCIPAL
 
 rodando = True
@@ -174,24 +211,24 @@ while rodando:
 
         if e.type == pygame.KEYDOWN:
 
-            
             if estado == "menu":
-
                 if e.key == pygame.K_1:
+                    resetar_jogo()
                     estado = "jogando"
-                if e.key == pygame.K_2:
+                elif e.key == pygame.K_2:
                     rodando = False
 
-            
             elif estado == "jogando" and e.key == pygame.K_ESCAPE:
                 estado = "pausado"
 
             elif estado == "pausado" and e.key == pygame.K_ESCAPE:
                 estado = "jogando"
 
-        if estado == "gameover":
-                    if e.key == pygame.K_1:
-                        estado = "menu"
+            elif estado == "gameover":
+                if e.key == pygame.K_1:
+                    resetar_jogo()
+                    estado = "menu"
+
 
     estados_do_jogo()
     pygame.display.update()
