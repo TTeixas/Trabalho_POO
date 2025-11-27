@@ -14,10 +14,10 @@ Por enquanto, o jogo possui as seguintes funcionalidaes:
 Comandos para instalar/ rodar o jogo:
 
 ```bash
-git clone https://github.com/seu-usuario/seu-jogo.git
-cd seu-jogo
+git clone https://github.com/TTeixas/Trabalho_POO.git
+cd jogo
 
 pip install -r requirements.txt
 
-python prototype.py
+python jogo.py
 
