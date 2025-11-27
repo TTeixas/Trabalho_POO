@@ -1,6 +1,6 @@
 import pygame
 import random
-from aa import *
+from main import *
 
 
 """
@@ -115,10 +115,6 @@ while rodando:
         pygame.display.update()
         pygame.time.delay(3000)  # espera 3 segundos
         continue
-
-        
-
-
     
     if tempo_atual - tempo_ultimo_spawn > intervalo_spawn and len(inimigos) < max_inimigos:
         inimigos.append(spawn_inimigo())
@@ -152,6 +148,7 @@ while rodando:
             arma.attack(x, y, inimigo.x, inimigo.y)
             arma.atualizar(inimigos)
             arma.draw(tela)
+    
 
     pygame.display.update()
     clock.tick(60)
